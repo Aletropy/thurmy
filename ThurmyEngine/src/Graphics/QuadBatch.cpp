@@ -6,6 +6,7 @@
 
 #include <stdint.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 template <typename T>
 using Ref = std::shared_ptr<T>;
@@ -57,6 +58,7 @@ namespace Thurmy
 		layout.Push<float>(4);
 		layout.Push<float>(4);
 
+
 		uint32_t* indices = new uint32_t[s_Data.MaxIndices];
 		uint32_t offset = 0;
 		for (uint32_t i = 0; i < BatchData::MaxIndices; i += 6)
@@ -72,10 +74,10 @@ namespace Thurmy
 			offset += 4;
 		}
 
-		s_Data.Ib = IndexBuffer::Create(indices, BatchData::MaxIndices * sizeof(uint32_t));
+		s_Data.Ib = IndexBuffer::Create((void*)indices, BatchData::MaxIndices * sizeof(uint32_t));
 		s_Data.Va->SetIndexBuffer(s_Data.Ib);
-
 		s_Data.Va->AddVertexBuffer(s_Data.Vb, layout);
+		delete[] indices;
 
 		s_Data.Shader = Shader::Create("res/Default.vert", "res/Default.frag");
 	}
@@ -88,7 +90,7 @@ namespace Thurmy
 
 	void QuadBatch::Push(const glm::vec3& pos, const glm::vec3& size, const glm::vec4& color)
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(), pos);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos);
 
 		if (s_Data.NumOfIndices >= BatchData::MaxIndices)
 		{
@@ -119,6 +121,13 @@ namespace Thurmy
 		s_Data.Shader->Use();
 
 		Renderer::DrawVA(s_Data.Va, s_Data.NumOfIndices);
+	}
+
+	void QuadBatch::SetCamera(const Camera& camera)
+	{
+		glm::mat4 viewProj = camera.GetViewProjMatrix();
+		s_Data.Shader->Use();
+		s_Data.Shader->SetMat4f("u_ViewProjMatrix", glm::value_ptr(viewProj));
 	}
 
 	void QuadBatch::NextBatch()

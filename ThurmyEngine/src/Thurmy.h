@@ -7,6 +7,7 @@
 #include "Graphics/DefaultBuffer.h"
 #include "Graphics/VertexArray.h"
 #include "Graphics/VertexBufferLayout.h"
+#include "Graphics/Camera/OrthographicCamera.h"
 #include "Graphics/Shader.h"
 
 #include "Graphics/QuadBatch.h"

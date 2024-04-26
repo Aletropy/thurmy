@@ -30,15 +30,13 @@ namespace Thurmy
 
 	void OpenGL46VertexBuffer::SetData(void* data, uint32_t size)
 	{
-		Bind();
+		glBindBuffer(GL_ARRAY_BUFFER, m_Id);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
 
 	/////////////////////////////////////////////////////
 	/////////////////    INDEX BUFFER	/////////////////
 	/////////////////////////////////////////////////////
-
-
 	OpenGL46IndexBuffer::OpenGL46IndexBuffer(void* data, uint32_t size)
 	{
 		glCreateBuffers(1, &m_Id);

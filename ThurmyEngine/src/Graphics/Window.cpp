@@ -1,4 +1,8 @@
 #include "Window.h"
+
+#include "Graphics/Renderer.h"
+#include "Graphics/QuadBatch.h"
+
 #include <GLFW/glfw3.h>
 #include "Core/Logger.h"
 
@@ -23,6 +27,9 @@ namespace Thurmy
 		glfwMakeContextCurrent(m_Handler);
 		
 		SetVSync(true);
+
+		Renderer::Initialize();
+		QuadBatch::Initialize();
 	}
 
 	Window::~Window()

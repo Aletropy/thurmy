@@ -39,6 +39,12 @@ namespace Thurmy
 		glUseProgram(m_Id);
 	}
 
+	void OpenGL46Shader::SetMat4f(const std::string& name, float* values)
+	{
+		int location = glGetUniformLocation(m_Id, name.c_str());
+		glUniformMatrix4fv(location, 1, false, values);
+	}
+
 	uint32_t OpenGL46Shader::CompileShader(const char* source, uint32_t type)
 	{
 		uint32_t id = glCreateShader(type);

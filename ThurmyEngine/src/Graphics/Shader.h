@@ -12,6 +12,7 @@ namespace Thurmy
 		virtual ~Shader() = default;
 
 		virtual void Use() = 0;
+		virtual void SetMat4f(const std::string& name, float* values) = 0;
 
 		static std::shared_ptr<Shader> Create(const std::string& vertexPath, const std::string& fragmentPath);
 

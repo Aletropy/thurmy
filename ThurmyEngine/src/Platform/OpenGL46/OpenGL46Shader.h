@@ -11,6 +11,7 @@ namespace Thurmy
 		~OpenGL46Shader();
 
 		void Use() override;
+		void SetMat4f(const std::string& name, float* values) override;
 
 	private:
 		uint32_t CompileShader(const char* source, uint32_t type);
