@@ -16,7 +16,8 @@ project "Sandbox"
     includedirs
     {
         "src",
-        "%{IncludeDirs.ThurmyEngine}"
+        "%{IncludeDirs.ThurmyEngine}",
+        "%{IncludeDirs.imgui}"
     }
 
     links

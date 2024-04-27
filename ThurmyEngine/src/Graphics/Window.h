@@ -12,7 +12,8 @@ namespace Thurmy
 		Window(int width, int height, const std::string& title);
 		~Window();
 
-		void Update();
+		void PollEvents();
+		void SwapBuffers();
 		bool ShouldClose();
 
 		void SetVSync(bool enable);

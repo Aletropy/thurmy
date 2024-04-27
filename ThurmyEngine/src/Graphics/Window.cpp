@@ -6,6 +6,10 @@
 #include <GLFW/glfw3.h>
 #include "Core/Logger.h"
 
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+
 namespace Thurmy
 {
 	static bool s_glfwInitialized = false;
@@ -28,6 +32,15 @@ namespace Thurmy
 		
 		SetVSync(true);
 
+		// Initialize ImGui
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO();
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
+
+		ImGui_ImplGlfw_InitForOpenGL(m_Handler, true);
+		ImGui_ImplOpenGL3_Init();
+
 		Renderer::Initialize();
 		QuadBatch::Initialize();
 	}
@@ -37,9 +50,18 @@ namespace Thurmy
 		glfwDestroyWindow(m_Handler);
 	}
 
-	void Window::Update()
+	void Window::PollEvents()
 	{
 		glfwPollEvents();
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+	}
+
+	void Window::SwapBuffers()
+	{
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(m_Handler);
 	}
 

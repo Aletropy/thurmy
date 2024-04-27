@@ -18,13 +18,15 @@ project "ThurmyEngine"
     {
         "src",
         "%{IncludeDirs.glad}",
-        "%{IncludeDirs.glfw}"
+        "%{IncludeDirs.glfw}",
+        "%{IncludeDirs.imgui}"
     }
 
     links
     {
         "glad",
-        "glfw"
+        "glfw",
+        "imgui"
     }
 
     filter "configurations:Debug"

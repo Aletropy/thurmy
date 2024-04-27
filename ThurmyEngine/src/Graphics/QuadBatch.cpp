@@ -90,7 +90,8 @@ namespace Thurmy
 
 	void QuadBatch::Push(const glm::vec3& pos, const glm::vec3& size, const glm::vec4& color)
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
+			* glm::scale(glm::mat4(1.0f), size);
 
 		if (s_Data.NumOfIndices >= BatchData::MaxIndices)
 		{
