@@ -5,6 +5,8 @@
 
 namespace Thurmy
 {
+	static glm::vec4 s_ClearColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
 	void Renderer::Initialize()
 	{
 		OpenGL46Renderer::Initialize();
@@ -17,6 +19,16 @@ namespace Thurmy
 
 	void Renderer::ClearColor(float r, float g, float b, float a)
 	{
-		OpenGL46Renderer::ClearColor(r, g, b, a);
+		s_ClearColor = { r, g, b, a };
+	}
+
+	void Renderer::ClearColor(const glm::vec4& color)
+	{
+		s_ClearColor = color;
+	}
+
+	void Renderer::Clear()
+	{
+		OpenGL46Renderer::ClearColor(s_ClearColor.r, s_ClearColor.g, s_ClearColor.b, s_ClearColor.a);
 	}
 }

@@ -1,28 +1,39 @@
-#include "Thurmy.h"
+#include <Thurmy.h>
+#include <Core/EntryPoint.h>
 
-#include <imgui.h>
-#include <glm/gtc/type_ptr.hpp>
+#include "PlayerInput.h"
 
 using namespace Thurmy;
 
-template <typename T>
-using Ref = std::shared_ptr<T>;
-
-int main()
+class SandboxApp : public Application
 {
-    Window window(1280, 720, "Sandbox Window");
+public:
+	SandboxApp()
+		: Application("Sandbox Application"), m_Camera(800, 600, 5.0f)
+	{
+		Renderer::ClearColor(0.8f, 0.65f, 0.45f);
+		QuadBatch::SetCamera(m_Camera);
+	}
 
-    OrthographicCamera camera(1280, 720, 15.0f);
+	void OnUpdate(float deltaTime) override
+	{
+		auto axis = PlayerInput::GetMoveAxis();
 
-    while (!window.ShouldClose())
-    {
-        window.PollEvents();
-        Renderer::ClearColor(0.8f, 0.4f, 0.35f);
+		auto move = (axis * deltaTime) * 5.0f;
 
-        QuadBatch::SetCamera(camera);
+		quadPos = quadPos += glm::vec3(move.x, move.y, 0.0f);
 
-        window.SwapBuffers();
-    }
+		QuadBatch::Begin();
+		QuadBatch::Push(quadPos, glm::vec3(1.0f));
+		QuadBatch::End();
+	}
 
-    return 0;
+private:
+	glm::vec3 quadPos = glm::vec3(0.0f);
+	OrthographicCamera m_Camera;
+};
+
+Application* Thurmy::GetMainApp()
+{
+	return new SandboxApp;
 }

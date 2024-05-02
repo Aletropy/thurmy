@@ -6,6 +6,14 @@ struct GLFWwindow;
 
 namespace Thurmy
 {
+	struct WindowProps
+	{
+	public:
+		float Width = 800;
+		float Height = 600;
+		bool AllowResize = true;
+	};
+
 	class Window
 	{
 	public:
@@ -18,7 +26,7 @@ namespace Thurmy
 
 		void SetVSync(bool enable);
 
-		inline void* GetNativeHandler() { return m_Handler; }
+		inline void* GetNativeHandler() const { return m_Handler; }
 
 	private:
 		GLFWwindow* m_Handler;

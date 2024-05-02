@@ -1,14 +1,13 @@
 #include "Window.h"
 
-#include "Graphics/Renderer.h"
-#include "Graphics/QuadBatch.h"
-
 #include <GLFW/glfw3.h>
 #include "Core/Logger.h"
 
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
+
+#include "Core/Application.h"
 
 namespace Thurmy
 {
@@ -29,7 +28,21 @@ namespace Thurmy
 		m_Handler = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
 		glfwMakeContextCurrent(m_Handler);
-		
+
+		glfwSetKeyCallback(m_Handler, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+			{
+				if (action == GLFW_PRESS)
+				{
+					KeyPressEvent event(key);
+					Application::Instance->OnEvent(event);
+				}
+				else if (action == GLFW_RELEASE)
+				{
+					KeyReleaseEvent event(key);
+					Application::Instance->OnEvent(event);
+				}
+			});
+
 		SetVSync(true);
 
 		// Initialize ImGui
@@ -40,9 +53,6 @@ namespace Thurmy
 
 		ImGui_ImplGlfw_InitForOpenGL(m_Handler, true);
 		ImGui_ImplOpenGL3_Init();
-
-		Renderer::Initialize();
-		QuadBatch::Initialize();
 	}
 
 	Window::~Window()
@@ -53,15 +63,10 @@ namespace Thurmy
 	void Window::PollEvents()
 	{
 		glfwPollEvents();
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
 	}
 
 	void Window::SwapBuffers()
 	{
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(m_Handler);
 	}
 
